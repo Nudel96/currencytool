@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "buildCommand": "npm run vercel-build",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install -g pnpm@8 && pnpm install",
+  "buildCommand": "cd packages/shared && npm install && npm run build && cd ../../apps/web && npm install && npm run build",
+  "devCommand": "cd apps/web && npm run dev",
+  "installCommand": "cd packages/shared && npm install && cd ../../apps/web && npm install",
   "framework": "sveltekit",
   "outputDirectory": "apps/web/build"
 }

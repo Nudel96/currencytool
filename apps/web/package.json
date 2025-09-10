@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.38.5",
-    "shared": "workspace:*"
+    "shared": "file:../../packages/shared"
   },
   "type": "module"
 }
