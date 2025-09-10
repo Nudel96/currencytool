@@ -7,14 +7,18 @@
     "apps/*",
     "packages/*"
   ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "dev": "pnpm --filter web dev",
-    "build": "pnpm --filter web build",
+    "build": "pnpm --filter shared build && pnpm --filter web build",
     "preview": "pnpm --filter web preview",
     "test": "pnpm --recursive test",
     "lint": "pnpm --recursive lint",
     "type-check": "pnpm --recursive type-check",
-    "clean": "pnpm --recursive clean"
+    "clean": "pnpm --recursive clean",
+    "vercel-build": "pnpm install && pnpm --filter shared build && pnpm --filter web build"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",

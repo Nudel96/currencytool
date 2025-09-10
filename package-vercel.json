@@ -1,0 +1,18 @@
+{
+  "name": "pat-macro-calendar",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "cd packages/shared && npm run build && cd ../../apps/web && npm run build",
+    "dev": "cd apps/web && npm run dev",
+    "preview": "cd apps/web && npm run preview"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.13",
+    "typescript": "^5.9.2"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}
