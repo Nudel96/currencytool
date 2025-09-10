@@ -1,0 +1,78 @@
+name: HEATMAP-Version3
+type: augment-spec
+version: 1.0
+
+agents:
+  - name: spec-maintainer
+    role: Maintain and validate specifications
+    rules:
+      - Ensure all specs follow the template format
+      - Validate cross-references between specs
+      - Keep specifications in sync with implementation
+
+  - name: feature-planner
+    role: Break down features into tasks
+    rules:
+      - Create detailed implementation plans
+      - Identify dependencies
+      - Set realistic timelines
+      - Define clear acceptance criteria
+
+  - name: code-architect
+    role: Design technical solutions
+    rules:
+      - Ensure architectural consistency
+      - Review technical feasibility
+      - Identify potential bottlenecks
+      - Propose optimization strategies
+
+workflows:
+  - name: new-feature
+    steps:
+      - Create feature spec using template
+      - Agent review and refinement
+      - Break down into tasks
+      - Create implementation plan
+      
+  - name: update-spec
+    steps:
+      - Review existing spec
+      - Propose changes
+      - Agent validation
+      - Update documentation
+
+templates:
+  - name: feature
+    path: .spec/templates/feature.md
+    validation:
+      - required-sections: [Overview, Motivation, Technical Details, Requirements]
+      - required-fields: [type, priority, estimate]
+
+  - name: component
+    path: .spec/templates/component.md
+    validation:
+      - required-sections: [Purpose, Interface, Implementation]
+      - required-fields: [dependencies, status]
+
+  - name: api
+    path: .spec/templates/api.md
+    validation:
+      - required-sections: [Endpoints, Request/Response, Security]
+      - required-fields: [version, auth-required]
+
+commands:
+  - name: specify init
+    description: Initialize a new specification
+    usage: specify init <type> <name>
+    
+  - name: specify new
+    description: Create a new specification
+    usage: specify new <template> <name>
+    
+  - name: specify validate
+    description: Validate specifications
+    usage: specify validate [spec-path]
+    
+  - name: specify update
+    description: Update existing specification
+    usage: specify update <spec-path>

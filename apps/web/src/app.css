@@ -1,0 +1,77 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  body {
+    @apply bg-pat-bg text-pat-text;
+  }
+}
+
+@layer components {
+  .pat-card {
+    @apply bg-pat-card border border-pat-border rounded-lg;
+  }
+  
+  .pat-button {
+    @apply px-4 py-2 rounded-md font-medium transition-colors;
+  }
+  
+  .pat-button-primary {
+    @apply pat-button bg-pat-primary text-white hover:bg-pat-primary/90;
+  }
+  
+  .pat-table {
+    @apply w-full text-sm text-left;
+  }
+  
+  .pat-table thead {
+    @apply uppercase text-gray-400 sticky top-0 bg-pat-bg;
+  }
+  
+  .pat-table th {
+    @apply py-3 px-4 font-semibold;
+  }
+  
+  .pat-table td {
+    @apply py-3 px-4 border-b border-pat-border;
+  }
+  
+  .pat-table tbody tr {
+    @apply hover:bg-pat-hover transition-colors;
+  }
+  
+  .impact-badge {
+    @apply px-2 py-1 rounded text-xs font-medium;
+  }
+  
+  .impact-high {
+    @apply impact-badge bg-impact-high text-impact-high-text;
+  }
+  
+  .impact-medium {
+    @apply impact-badge bg-impact-medium text-impact-medium-text;
+  }
+  
+  .sentiment-pill {
+    @apply px-2 py-1 rounded text-xs font-medium;
+  }
+  
+  .sentiment-bullish {
+    @apply sentiment-pill bg-sentiment-bullish text-sentiment-bullish-text;
+  }
+  
+  .sentiment-bearish {
+    @apply sentiment-pill bg-sentiment-bearish text-sentiment-bearish-text;
+  }
+  
+  .sentiment-neutral {
+    @apply sentiment-pill bg-sentiment-neutral text-sentiment-neutral-text;
+  }
+}
