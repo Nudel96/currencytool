@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { EventRow } from 'shared/types';
-  import { calculateSurprise } from 'shared/sentiment';
+  import type { EventRow } from '$lib/shared';
+  import { calculateSurprise } from '$lib/shared';
   import ImpactBadge from './ImpactBadge.svelte';
   import SentimentPill from './SentimentPill.svelte';
   import SkeletonRow from './SkeletonRow.svelte';
