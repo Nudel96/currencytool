@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { browser } from '$app/environment';
-  import type { CurrencyOverview } from 'shared/types';
+  import type { CurrencyOverview } from '$lib/shared';
   import CurrencyTabs from '$lib/components/CurrencyTabs.svelte';
   import FxTickerBar from '$lib/components/FxTickerBar.svelte';
   import EventTable from '$lib/components/EventTable.svelte';

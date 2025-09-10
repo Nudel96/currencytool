@@ -12,9 +12,7 @@
 		"moduleResolution": "bundler",
 		"paths": {
 			"$lib": ["./src/lib"],
-			"$lib/*": ["./src/lib/*"],
-			"shared": ["../../packages/shared/src"],
-			"shared/*": ["../../packages/shared/src/*"]
+			"$lib/*": ["./src/lib/*"]
 		}
 	}
 }

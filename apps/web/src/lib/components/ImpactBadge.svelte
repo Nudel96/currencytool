@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Impact } from 'shared/types';
+  import type { Impact } from '$lib/shared';
   
   export let impact: Impact;
 </script>

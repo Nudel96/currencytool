@@ -1,7 +1,6 @@
 import { json } from '@sveltejs/kit';
 import { supabaseAdmin } from '$lib/supabase.js';
-import { getPairsForCurrency, isSupportedCurrency } from 'shared/pairs';
-import type { CurrencyOverview } from 'shared/types';
+import { getPairsForCurrency, isSupportedCurrency, type CurrencyOverview } from '$lib/shared';
 import type { RequestHandler } from './$types.js';
 
 // In-memory cache for 60 seconds

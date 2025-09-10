@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { supportedCurrencies } from 'shared/pairs';
+  import { supportedCurrencies } from '$lib/shared';
   
   export let activeCurrency: string = 'USD';
   export let onCurrencyChange: (currency: string) => void;

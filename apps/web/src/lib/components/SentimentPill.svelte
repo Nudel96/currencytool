@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Sentiment } from 'shared/types';
+  import type { Sentiment } from '$lib/shared';
   
   export let sentiment: Sentiment | undefined = 'Neutral';
   

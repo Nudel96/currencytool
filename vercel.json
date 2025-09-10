@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "buildCommand": "cd packages/shared && npm install && npm run build && cd ../../apps/web && npm install && npm run build",
+  "buildCommand": "cd apps/web && npm install && npm run build",
   "devCommand": "cd apps/web && npm run dev",
-  "installCommand": "cd packages/shared && npm install && cd ../../apps/web && npm install",
+  "installCommand": "cd apps/web && npm install",
   "framework": "sveltekit",
   "outputDirectory": "apps/web/build"
 }

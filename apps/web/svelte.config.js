@@ -9,8 +9,7 @@ const config = {
 			runtime: 'nodejs18.x'
 		}),
 		alias: {
-			$lib: './src/lib',
-			shared: '../../packages/shared/src'
+			$lib: './src/lib'
 		}
 	}
 };
