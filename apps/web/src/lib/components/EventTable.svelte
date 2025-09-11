@@ -40,6 +40,52 @@
   function getEventName(event: EventRow): string {
     return event.canonical_indicator || event.report_name;
   }
+
+  function getEventCategory(event: EventRow): string {
+    const canonical = event.canonical_indicator;
+    if (!canonical) return '';
+
+    // Categorize USD events
+    if (canonical.includes('Federal Funds') || canonical.includes('FOMC') || canonical.includes('Fed')) {
+      return '🏦 Central Bank';
+    }
+    if (canonical.includes('CPI') || canonical.includes('PCE') || canonical.includes('PPI')) {
+      return '📈 Inflation';
+    }
+    if (canonical.includes('Payrolls') || canonical.includes('Unemployment') || canonical.includes('Claims') || canonical.includes('Employment')) {
+      return '👥 Employment';
+    }
+    if (canonical.includes('GDP')) {
+      return '🏭 GDP';
+    }
+    if (canonical.includes('PMI') || canonical.includes('Manufacturing') || canonical.includes('Fed Index')) {
+      return '🏭 Manufacturing';
+    }
+    if (canonical.includes('Retail') || canonical.includes('Consumer') || canonical.includes('Trade')) {
+      return '🛒 Consumer/Trade';
+    }
+    return '';
+  }
+
+  function isHighPriorityEvent(event: EventRow): boolean {
+    const canonical = event.canonical_indicator;
+    if (!canonical) return false;
+
+    const highPriorityEvents = [
+      'Federal Funds Rate Decision',
+      'Non-Farm Payrolls (NFP)',
+      'CPI YoY',
+      'Core CPI YoY',
+      'Core PCE YoY',
+      'GDP QoQ',
+      'GDP Annualized QoQ',
+      'Unemployment Rate',
+      'ISM Manufacturing PMI',
+      'ISM Services PMI'
+    ];
+
+    return highPriorityEvents.includes(canonical);
+  }
 </script>
 
 <div class="pat-card">
@@ -79,10 +125,20 @@
                 {formatDateTime(event.event_datetime)}
               </td>
               <td class="font-medium">
-                <div>{getEventName(event)}</div>
-                {#if event.country}
-                  <div class="text-xs text-gray-400 mt-1">{event.country}</div>
-                {/if}
+                <div class="flex items-center gap-2">
+                  {#if isHighPriorityEvent(event)}
+                    <span class="text-yellow-400 text-xs">⭐</span>
+                  {/if}
+                  <span class="{isHighPriorityEvent(event) ? 'font-semibold' : ''}">{getEventName(event)}</span>
+                </div>
+                <div class="flex items-center gap-2 mt-1">
+                  {#if getEventCategory(event)}
+                    <span class="text-xs text-blue-400">{getEventCategory(event)}</span>
+                  {/if}
+                  {#if event.country}
+                    <span class="text-xs text-gray-400">{event.country}</span>
+                  {/if}
+                </div>
               </td>
               <td class="font-mono {getSurpriseColor(event.actual, event.forecast)}">
                 {formatSurprise(event.actual, event.forecast, event.units)}

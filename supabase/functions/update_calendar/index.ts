@@ -63,15 +63,19 @@ function decideSentiment(
 
 // Event canonicalization (simplified regex map)
 const regexMap = [
-  { canonical: 'Non-Farm Payrolls (NFP)', re: /Non[- ]?Farm(?: Payrolls)?|Nonfarm Payrolls/i },
-  { canonical: 'Federal Funds Rate Decision', re: /Federal Funds Rate|Fed Rate|FOMC.*Rate/i },
-  { canonical: 'CPI YoY', re: /\bCPI\b.*\bYoY\b|Consumer Price Index.*YoY/i },
-  { canonical: 'Core CPI YoY', re: /Core.*CPI.*YoY/i },
-  { canonical: 'GDP QoQ', re: /\bGDP(\s+Growth)?\s*Rate?.*\bQoQ\b/i },
-  { canonical: 'Unemployment Rate', re: /Unemployment Rate/i },
-  { canonical: 'Initial Jobless Claims', re: /Initial Jobless Claims/i },
-  { canonical: 'ISM Manufacturing PMI', re: /ISM.*Manufacturing.*PMI/i },
+  { canonical: 'Non-Farm Payrolls (NFP)', re: /Non[- ]?Farm(?: Payrolls)?|Nonfarm Payrolls|NFP|Employment Change.*US/i },
+  { canonical: 'Federal Funds Rate Decision', re: /Federal Funds Rate|Fed Rate|FOMC.*Rate.*Decision|Interest Rate Decision.*US/i },
+  { canonical: 'CPI YoY', re: /\bCPI\b.*\bYoY\b|Consumer Price Index.*YoY|Inflation.*YoY.*US/i },
+  { canonical: 'Core CPI YoY', re: /Core.*CPI.*YoY|Core.*Consumer.*Price.*YoY|Core.*Inflation.*YoY/i },
+  { canonical: 'Core PCE YoY', re: /\bCore PCE\b.*YoY|Core.*Personal.*Consumption.*YoY/i },
+  { canonical: 'GDP QoQ', re: /\bGDP(\s+Growth)?\s*Rate?.*\bQoQ\b|Gross.*Domestic.*Product.*QoQ|US.*GDP.*QoQ/i },
+  { canonical: 'GDP Annualized QoQ', re: /GDP.*Annualized.*QoQ|GDP.*SAAR|Annualized.*GDP.*QoQ/i },
+  { canonical: 'Unemployment Rate', re: /Unemployment Rate|Jobless Rate.*US/i },
+  { canonical: 'Initial Jobless Claims', re: /Initial Jobless Claims|Initial.*Claims|Weekly.*Jobless.*Claims/i },
+  { canonical: 'ISM Manufacturing PMI', re: /ISM.*Manufacturing.*PMI|Institute.*Supply.*Management.*Manufacturing/i },
+  { canonical: 'ISM Services PMI', re: /ISM.*Services.*PMI|ISM.*Non.*Manufacturing/i },
   { canonical: 'Retail Sales MoM', re: /Retail Sales.*MoM/i },
+  { canonical: 'Industrial Production MoM', re: /Industrial.*Production.*MoM/i },
   { canonical: 'Core PCE YoY', re: /\bCore PCE\b.*YoY/i },
   { canonical: 'ECB Interest Rate Decision', re: /ECB.*(Rate|Interest).*Decision|Deposit Facility/i },
   { canonical: 'BoE Interest Rate', re: /Bank of England|BoE.*(Rate|Interest).*Decision/i },
@@ -133,11 +137,22 @@ serve(async (req) => {
         
         console.log(`Found ${events.length} events for ${currency.country}`);
         
+        let processedCount = 0;
+        let highImpactCount = 0;
+        let mediumImpactCount = 0;
+
         for (const e of events) {
-          const impactRaw = String(e.economicImpact ?? e.impact ?? '').toLowerCase();
-          if (impactRaw !== 'high' && impactRaw !== 'moderate') continue;
-          
-          const impact = impactRaw === 'high' ? 'High' : 'Medium';
+          const impactRaw = String(e.economicImpact ?? e.impact ?? '').toLowerCase().trim();
+
+          // Enhanced impact filtering - handle various formats
+          const isHighImpact = impactRaw === 'high' || impactRaw === 'h' || impactRaw === '3';
+          const isMediumImpact = impactRaw === 'moderate' || impactRaw === 'medium' || impactRaw === 'med' || impactRaw === 'm' || impactRaw === '2';
+
+          if (!isHighImpact && !isMediumImpact) continue;
+
+          const impact = isHighImpact ? 'High' : 'Medium';
+          if (isHighImpact) highImpactCount++;
+          else mediumImpactCount++;
           const report_name = String(e.report_name ?? e.title ?? '');
           const canonical = canonicalize(report_name);
           
@@ -196,8 +211,12 @@ serve(async (req) => {
           
           if (upsertError) {
             console.error(`Upsert error for ${report_name}:`, upsertError);
+          } else {
+            processedCount++;
           }
         }
+
+        console.log(`${currency.country} processed: ${processedCount} events (${highImpactCount} High, ${mediumImpactCount} Medium impact)`)
       } catch (error) {
         console.error(`Error processing ${currency.country}:`, error);
       }

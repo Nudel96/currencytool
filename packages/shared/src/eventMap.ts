@@ -4,19 +4,72 @@ export interface EventMapping {
 }
 
 export const regexMap: EventMapping[] = [
-  // US Events
-  { canonical: 'Non-Farm Payrolls (NFP)', re: /Non[- ]?Farm(?: Payrolls)?|Nonfarm Payrolls/i },
-  { canonical: 'Federal Funds Rate Decision', re: /Federal Funds Rate|Fed Rate|FOMC.*Rate/i },
-  { canonical: 'CPI YoY', re: /\bCPI\b.*\bYoY\b|Consumer Price Index.*YoY/i },
-  { canonical: 'Core CPI YoY', re: /Core.*CPI.*YoY/i },
-  { canonical: 'GDP QoQ', re: /\bGDP(\s+Growth)?\s*Rate?.*\bQoQ\b/i },
-  { canonical: 'Unemployment Rate', re: /Unemployment Rate/i },
-  { canonical: 'Initial Jobless Claims', re: /Initial Jobless Claims/i },
-  { canonical: 'ISM Manufacturing PMI', re: /ISM.*Manufacturing.*PMI/i },
+  // US Events - Central Bank Decisions (Fed)
+  { canonical: 'Federal Funds Rate Decision', re: /Federal Funds Rate|Fed Rate|FOMC.*Rate.*Decision|Interest Rate Decision.*US|US.*Interest Rate/i },
+  { canonical: 'FOMC Minutes', re: /FOMC.*Minutes|Federal Open Market Committee.*Minutes/i },
+  { canonical: 'FOMC Statement', re: /FOMC.*Statement|Federal Open Market Committee.*Statement/i },
+  { canonical: 'Fed Chair Speech', re: /Fed.*Chair.*Speech|Powell.*Speech|Yellen.*Speech|Federal Reserve.*Chair/i },
+  { canonical: 'Fed Officials Speech', re: /Fed.*Official.*Speech|FOMC.*Member.*Speech|Federal Reserve.*Official/i },
+  { canonical: 'Fed Monetary Policy Report', re: /Fed.*Monetary.*Policy.*Report|Monetary Policy Report/i },
+  { canonical: 'Fed Beige Book', re: /Fed.*Beige.*Book|Beige Book/i },
+
+  // US Events - Inflation Data (CPI, PCE, PPI)
+  { canonical: 'CPI YoY', re: /\bCPI\b.*\bYoY\b|Consumer Price Index.*YoY|Inflation.*YoY.*US|US.*Inflation.*YoY/i },
+  { canonical: 'CPI MoM', re: /\bCPI\b.*\bMoM\b|Consumer Price Index.*MoM|Inflation.*MoM.*US|US.*Inflation.*MoM/i },
+  { canonical: 'Core CPI YoY', re: /Core.*CPI.*YoY|Core.*Consumer.*Price.*YoY|Core.*Inflation.*YoY/i },
+  { canonical: 'Core CPI MoM', re: /Core.*CPI.*MoM|Core.*Consumer.*Price.*MoM|Core.*Inflation.*MoM/i },
+  { canonical: 'PCE YoY', re: /\bPCE\b.*YoY|Personal Consumption.*YoY|Personal.*Consumption.*Expenditures.*YoY/i },
+  { canonical: 'Core PCE YoY', re: /\bCore PCE\b.*YoY|Core.*Personal.*Consumption.*YoY|Core.*PCE.*Price.*Index.*YoY/i },
+  { canonical: 'Core PCE MoM', re: /\bCore PCE\b.*MoM|Core.*Personal.*Consumption.*MoM|Core.*PCE.*Price.*Index.*MoM/i },
+  { canonical: 'PPI YoY', re: /\bPPI\b.*YoY|Producer Price.*YoY/i },
+  { canonical: 'PPI MoM', re: /\bPPI\b.*MoM|Producer Price.*MoM/i },
+  { canonical: 'Core PPI YoY', re: /Core.*PPI.*YoY/i },
+
+  // US Events - Employment Data (NFP, Unemployment, Claims)
+  { canonical: 'Non-Farm Payrolls (NFP)', re: /Non[- ]?Farm(?: Payrolls)?|Nonfarm Payrolls|NFP|Employment Change.*US|US.*Employment.*Change/i },
+  { canonical: 'Unemployment Rate', re: /Unemployment Rate|Jobless Rate.*US|US.*Jobless Rate/i },
+  { canonical: 'Initial Jobless Claims', re: /Initial Jobless Claims|Initial.*Claims|Weekly.*Jobless.*Claims/i },
+  { canonical: 'Continuing Jobless Claims', re: /Continuing.*Jobless.*Claims|Continued.*Claims|Continuing.*Claims/i },
+  { canonical: 'ADP Employment Change', re: /ADP.*Employment.*Change|ADP.*Payrolls|ADP.*Jobs.*Report/i },
+  { canonical: 'Average Hourly Earnings YoY', re: /Average.*Hourly.*Earnings.*YoY|Hourly.*Earnings.*YoY/i },
+  { canonical: 'Average Hourly Earnings MoM', re: /Average.*Hourly.*Earnings.*MoM|Hourly.*Earnings.*MoM/i },
+  { canonical: 'Labor Force Participation Rate', re: /Labor.*Force.*Participation|Participation.*Rate/i },
+  { canonical: 'Employment Cost Index QoQ', re: /Employment.*Cost.*Index|ECI.*QoQ/i },
+
+  // US Events - GDP Growth
+  { canonical: 'GDP QoQ', re: /\bGDP(\s+Growth)?\s*Rate?.*\bQoQ\b|Gross.*Domestic.*Product.*QoQ|US.*GDP.*QoQ/i },
+  { canonical: 'GDP Annualized QoQ', re: /GDP.*Annualized.*QoQ|GDP.*SAAR|Annualized.*GDP.*QoQ/i },
+  { canonical: 'GDP YoY', re: /\bGDP\b.*YoY|Gross.*Domestic.*Product.*YoY|US.*GDP.*YoY/i },
+  { canonical: 'GDP Deflator QoQ', re: /GDP.*Deflator.*QoQ|GDP.*Price.*Index.*QoQ/i },
+  { canonical: 'GDP Deflator YoY', re: /GDP.*Deflator.*YoY|GDP.*Price.*Index.*YoY/i },
+  { canonical: 'GDP Preliminary QoQ', re: /GDP.*Preliminary.*QoQ|Preliminary.*GDP.*QoQ/i },
+  { canonical: 'GDP Final QoQ', re: /GDP.*Final.*QoQ|Final.*GDP.*QoQ/i },
+
+  // US Events - Manufacturing/PMI Data
+  { canonical: 'ISM Manufacturing PMI', re: /ISM.*Manufacturing.*PMI|Institute.*Supply.*Management.*Manufacturing/i },
+  { canonical: 'ISM Services PMI', re: /ISM.*Services.*PMI|ISM.*Non.*Manufacturing|Institute.*Supply.*Management.*Services/i },
+  { canonical: 'Markit Manufacturing PMI', re: /Markit.*Manufacturing.*PMI|S&P.*Manufacturing.*PMI|S&P.*Global.*Manufacturing.*PMI/i },
+  { canonical: 'Markit Services PMI', re: /Markit.*Services.*PMI|S&P.*Services.*PMI|S&P.*Global.*Services.*PMI/i },
+  { canonical: 'Philadelphia Fed Index', re: /Philadelphia.*Fed.*Index|Philly.*Fed|Philadelphia.*Fed.*Manufacturing.*Index/i },
+  { canonical: 'NY Empire State Index', re: /Empire.*State.*Index|NY.*Fed.*Index|New York.*Fed.*Manufacturing.*Index/i },
+  { canonical: 'Richmond Fed Index', re: /Richmond.*Fed.*Index|Richmond.*Fed.*Manufacturing.*Index/i },
+  { canonical: 'Kansas City Fed Index', re: /Kansas.*City.*Fed.*Index|Kansas.*City.*Fed.*Manufacturing.*Index/i },
+
+  // US Events - Additional Key Indicators
   { canonical: 'Retail Sales MoM', re: /Retail Sales.*MoM/i },
-  { canonical: 'Core PCE YoY', re: /\bCore PCE\b.*YoY/i },
-  { canonical: 'FOMC Minutes', re: /FOMC.*Minutes/i },
+  { canonical: 'Retail Sales Ex Auto MoM', re: /Retail.*Sales.*Ex.*Auto.*MoM|Core.*Retail.*Sales/i },
+  { canonical: 'Industrial Production MoM', re: /Industrial.*Production.*MoM/i },
+  { canonical: 'Capacity Utilization', re: /Capacity.*Utilization/i },
   { canonical: 'Trade Balance', re: /Trade Balance/i },
+  { canonical: 'Current Account', re: /Current Account/i },
+  { canonical: 'Consumer Confidence', re: /Consumer.*Confidence/i },
+  { canonical: 'Consumer Sentiment', re: /Consumer.*Sentiment|Michigan.*Sentiment/i },
+  { canonical: 'Durable Goods Orders MoM', re: /Durable.*Goods.*Orders.*MoM/i },
+  { canonical: 'Factory Orders MoM', re: /Factory.*Orders.*MoM/i },
+  { canonical: 'Housing Starts', re: /Housing.*Starts/i },
+  { canonical: 'Building Permits', re: /Building.*Permits/i },
+  { canonical: 'Existing Home Sales', re: /Existing.*Home.*Sales/i },
+  { canonical: 'New Home Sales', re: /New.*Home.*Sales/i },
   
   // EUR Events
   { canonical: 'ECB Interest Rate Decision', re: /ECB.*(Rate|Interest).*Decision|Deposit Facility/i },
